@@ -1,18 +1,20 @@
-"""LLM Cost Observability SDK."""
+"""Cost analytics and pricing module."""
 
-from sdk import CostAnalyticsSDK, get_sdk
-from pricing import (
-    PricingManager,
-    get_pricing_manager,
+from pricing.manager import PricingManager, get_pricing_manager
+from pricing.extractors import (
     CostExtractor,
     CostBreakdown,
     AnthropicExtractor,
     OpenAIExtractor,
     get_extractor,
+)
+from pricing.aggregator import (
     CostAggregator,
     RequestCost,
     AggregatedMetrics,
     get_cost_aggregator,
+)
+from pricing.interceptor import (
     CostInterceptor,
     AnthropicInterceptor,
     OpenAIInterceptor,
@@ -20,12 +22,8 @@ from pricing import (
     wrap_openai_client,
 )
 
-__version__ = "0.1.0"
 __all__ = [
-    # Main SDK
-    "CostAnalyticsSDK",
-    "get_sdk",
-    # Pricing
+    # Manager
     "PricingManager",
     "get_pricing_manager",
     # Extractors
