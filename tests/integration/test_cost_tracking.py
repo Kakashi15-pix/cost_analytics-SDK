@@ -1,8 +1,7 @@
 """Integration tests for request-detail tracking."""
 
-from sdk.pricing import CostInterceptor
-from sdk.pricing import aggregator
-from sdk.pricing.aggregator import RequestDetailsBuffer
+from ModelMetre.pricing import CostInterceptor
+from ModelMetre.pricing.aggregator import RequestDetailsBuffer
 
 
 class TestCostInterceptor:

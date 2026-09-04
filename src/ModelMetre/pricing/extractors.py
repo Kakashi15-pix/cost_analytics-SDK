@@ -4,11 +4,9 @@ Client-side extraction only captures usage/model/stop_reason.
 Cost computation is handled exclusively by the backend orchestrator.
 """
 from abc import ABC, abstractmethod
-from secrets import choice
 from typing import Dict, Any, Optional
 from dataclasses import dataclass
 import logging
-from urllib import response
 
 logger = logging.getLogger(__name__)
 

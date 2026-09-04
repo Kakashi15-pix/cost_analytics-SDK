@@ -2,18 +2,9 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
-
 import pytest
 
-
-# Ensure local imports like `from client import ...` resolve in tests.
-SRC_DIR = Path(__file__).resolve().parents[3] / "src"
-if str(SRC_DIR) not in sys.path:
-    sys.path.insert(0, str(SRC_DIR))
-
-from sdk.client import AuthenticationError, CostAnalyticsClient
+from ModelMetre.client import AuthenticationError, CostAnalyticsClient
 
 
 class _DummyResponse:
@@ -124,7 +115,7 @@ def test_request_retries_on_server_errors(monkeypatch):
         backoff_factor=0.0,
     )
 
-    monkeypatch.setattr("sdk.client.time.sleep", lambda *_: None)
+    monkeypatch.setattr("ModelMetre.client.time.sleep", lambda *_: None)
     result = client.request("GET", "/v1/costs")
 
     assert result.status_code == 200

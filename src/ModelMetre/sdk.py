@@ -2,9 +2,11 @@
 
 from typing import Any, Optional, Dict, Callable, List
 import logging
+import os
+import uuid
 
 from .pricing.aggregator import RequestDetailsBuffer
-from .client import DEFAULT_SERVER_URL, DEFAULT_AUTH_PATH, AuthContext, AuthenticationError
+from .client import DEFAULT_SERVER_URL 
 from .pricing import (
     CostInterceptor,
     wrap_custom_client,
@@ -127,10 +129,27 @@ class CostAnalyticsSDK:
 _sdk_instance = None
 
 
-def get_sdk() -> CostAnalyticsSDK:
-    #Get or create global SDK instance.
+def get_sdk(
+    api_key: Optional[str] = None,
+    client_id: Optional[str] = None,
+    server_url: Optional[str] = None,
+) -> CostAnalyticsSDK:
+    """Get or create the shared SDK instance using explicit or env credentials."""
     global _sdk_instance
     if _sdk_instance is None:
-        _sdk_instance = CostAnalyticsSDK()
+        resolved_api_key = api_key or os.getenv("CA_API_KEY")
+        if not resolved_api_key:
+            raise ValueError("api_key is required or CA_API_KEY must be set")
+
+        resolved_client_id = (
+            client_id
+            or os.getenv("CA_CLIENT_ID")
+            or str(uuid.uuid4())
+        )
+        _sdk_instance = CostAnalyticsSDK(
+            api_key=resolved_api_key,
+            client_id=resolved_client_id,
+            server_url=server_url or DEFAULT_SERVER_URL,
+        )
     return _sdk_instance
 

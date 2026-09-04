@@ -2,17 +2,9 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
-
 import pytest
 
-
-SRC_DIR = Path(__file__).resolve().parents[2] / "src"
-if str(SRC_DIR) not in sys.path:
-	sys.path.insert(0, str(SRC_DIR))
-
-from sdk import AuthenticationError, CostAnalyticsClient
+from ModelMetre import AuthenticationError, CostAnalyticsClient
 
 
 class _Response:

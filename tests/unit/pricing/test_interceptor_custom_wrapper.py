@@ -1,8 +1,8 @@
 """Tests for generic custom client wrapper support."""
 
-from sdk.pricing.aggregator import RequestDetailsBuffer
-from sdk.pricing.interceptor import CostInterceptor, wrap_custom_client
-from sdk.sdk import CostAnalyticsSDK
+from ModelMetre.pricing.aggregator import RequestDetailsBuffer
+from ModelMetre.pricing.interceptor import CostInterceptor, wrap_custom_client
+from ModelMetre.sdk import CostAnalyticsSDK
 
 
 class _ResponseObject:

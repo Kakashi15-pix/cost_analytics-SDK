@@ -1,8 +1,7 @@
 #Tests for request details buffer.
 
-import pytest
-from datetime import datetime, timedelta
-from sdk import RequestDetailsBuffer, RequestDetails
+from datetime import datetime
+from ModelMetre import RequestDetailsBuffer, RequestDetails
 
 
 class TestRequestDetailsBuffer:

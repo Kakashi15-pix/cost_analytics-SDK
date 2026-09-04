@@ -27,7 +27,7 @@ def _default_response_to_dict(response: Any) -> Dict[str, Any]:
 
 def _resolve_owner_and_attr(root: Any, attr_path: str) -> Tuple[Any, str]:
     """Resolve dotted path to (owner_object, attribute_name)."""
-    if not attr_path or not isinstance(attr_path, str):
+    if not attr_path:
         raise ValueError("method_path must be a non-empty string")
 
     parts = attr_path.split(".")

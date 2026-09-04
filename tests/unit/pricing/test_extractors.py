@@ -1,6 +1,6 @@
 """Tests for generic usage extraction."""
 
-from sdk.pricing.extractors import Extractor, get_extractor
+from ModelMetre.pricing.extractors import Extractor, get_extractor
 
 
 class TestExtractor:
