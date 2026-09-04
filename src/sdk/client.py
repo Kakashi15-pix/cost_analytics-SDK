@@ -14,7 +14,7 @@ from .api.routes import AUTH_VERIFY_PATH, CUSTOM_PRICING_PATH
 from .auth.config import ConfigError, get_api_key
 
 
-DEFAULT_BASE_URL = "https://server-sidesdk-production.up.railway.app"
+DEFAULT_SERVER_URL = "https://server-sidesdk-production.up.railway.app"
 DEFAULT_AUTH_PATH = AUTH_VERIFY_PATH
 
 
@@ -35,7 +35,7 @@ class CostAnalyticsClient:
 	def __init__(
 		self,
 		api_key: Optional[str] = None,
-		base_url: Optional[str] = None,
+		server_url: Optional[str] = None,
 		timeout: float = 30.0,
 		session: Optional[requests.Session] = None,
 		auth_path: str = DEFAULT_AUTH_PATH,
@@ -49,7 +49,7 @@ class CostAnalyticsClient:
 			self.api_key = api_key or get_api_key()
 		except ConfigError as exc:
 			raise AuthenticationError(str(exc)) from exc
-		self.base_url = os.getenv("CA_API_BASE_URL", DEFAULT_BASE_URL).rstrip("/")
+		self.server_url = os.getenv("CA_SERVER_URL", DEFAULT_SERVER_URL).rstrip("/")
 		self.timeout = timeout
 		self.session = session or requests.Session()
 		self.auth_path = auth_path
@@ -71,7 +71,7 @@ class CostAnalyticsClient:
 		if not self.api_key.startswith("ca_live_"):
 			raise AuthenticationError("Invalid API key format")
 
-		url = f"{self.base_url}{self.auth_path}"
+		url = f"{self.server_url}{self.auth_path}"
 		response = self.session.get(
 			url,
 			headers={"Authorization": f"Bearer {self.api_key}"},
@@ -136,7 +136,7 @@ class CostAnalyticsClient:
 	) -> requests.Response:
 		"""Send an authenticated request with 5xx retry only."""
 
-		url = f"{self.base_url}/{path.lstrip('/')}"
+		url = f"{self.server_url}/{path.lstrip('/')}"
 		headers = self._request_headers(provider=provider, model=model, request_id=request_id)
 
 		for attempt in range(self.max_retries):

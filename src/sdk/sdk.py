@@ -1,10 +1,10 @@
 #Main SDK client for unified cost tracking.
 
-from typing import Any, Optional, Dict, Callable
+from typing import Any, Optional, Dict, Callable, List
 import logging
 
 from .pricing.aggregator import RequestDetailsBuffer
-from .client import DEFAULT_BASE_URL, DEFAULT_AUTH_PATH, AuthContext, AuthenticationError
+from .client import DEFAULT_SERVER_URL, DEFAULT_AUTH_PATH, AuthContext, AuthenticationError
 from .pricing import (
     CostInterceptor,
     wrap_custom_client,
@@ -26,11 +26,11 @@ logger = logging.getLogger(__name__)
     """
 
 class CostAnalyticsSDK:
-    def __init__(self, api_key: str, client_id: str, base_url: str = DEFAULT_BASE_URL):
+    def __init__(self, api_key: str, client_id: str, server_url: str = DEFAULT_SERVER_URL) -> None:
         self.api_key = api_key
         self.client_id = client_id
         self.telemetry_client = TelemetryClient(
-            base_url,
+            server_url,
             api_key=api_key,
             client_id=client_id,
         )
@@ -108,7 +108,7 @@ class CostAnalyticsSDK:
             "pending_requests": len(self.aggregator.get_pending_requests()),
         }
 
-    def get_pending_requests(self) -> list:
+    def get_pending_requests(self) -> List[Dict[str, Any]]:
         #Get all pending requests awaiting flush to backend.
         return [r.to_dict() for r in self.aggregator.get_pending_requests()]
 

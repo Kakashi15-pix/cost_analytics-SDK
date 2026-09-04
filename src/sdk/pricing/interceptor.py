@@ -39,7 +39,7 @@ def _resolve_owner_and_attr(root: Any, attr_path: str) -> Tuple[Any, str]:
 
 class CostInterceptor:
 
-    def __init__(self,aggregator:RequestDetailsBuffer):
+    def __init__(self, aggregator: RequestDetailsBuffer) -> None:
         self.aggregator = aggregator
 
     def process_response(
@@ -77,10 +77,8 @@ class CostInterceptor:
         model = extractor.extract_model(response) or response.get("model", "unknown")
         
         stop_reason = None
-        if hasattr(extractor, "extract_stop_reason"):
-            stop_reason = extractor.extract_stop_reason(response)
-        if not stop_reason:
-            stop_reason = response.get("stop_reason")
+        extract_fn = getattr(extractor, "extract_stop_reason", None)
+        stop_reason = extract_fn(response) if extract_fn else None
 
         # Record request details (tokens only, NO raw response) for backend costing.
         self.aggregator.record_request(
@@ -135,13 +133,13 @@ def wrap_custom_client(
     Returns:
         Wrapped client (modified in place)
     """
-    active_interceptor = interceptor or CostInterceptor()
+    active_interceptor: CostInterceptor = interceptor or CostInterceptor(RequestDetailsBuffer())
     converter = response_to_dict or _default_response_to_dict
 
     owner, method_name = _resolve_owner_and_attr(client, method_path)
     original_method = getattr(owner, method_name)
 
-    def wrapped_method(*args, **kwargs):
+    def wrapped_method(*args: Any, **kwargs: Any) -> Any:
         response = original_method(*args, **kwargs)
         response_dict = converter(response)
 

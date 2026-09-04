@@ -4,7 +4,7 @@ import time
 import threading
 
 class TokenBucket:
-    def __init__(self, capacity: int, refill_rate: float):
+    def __init__(self, capacity: int, refill_rate: float) -> None:
         """
         capacity    : max burst allowed ( 5 flushes)
         refill_rate : tokens added per second (  = 1 token per 10s)
